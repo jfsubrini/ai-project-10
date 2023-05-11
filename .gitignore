@@ -47,4 +47,8 @@ env_p10
 # Datasets
 datasets/
 
+# Models
+checkpoint/
+models/
+
 .DS_Store
