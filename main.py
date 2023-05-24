@@ -9,9 +9,12 @@ st.header(":blue[PROJET 10 - Développez une preuve de concept]")
 st.subheader(":orange[Test d’un nouveau modèle de segmentation sémantique]")
 
 # Creating the side bar with the logo and the pages to select.
-st.sidebar.image("img_notebook/logo_dataspace.png", width=300)
+st.sidebar.title(":blue[Tableau de bord]")
+st.sidebar.markdown("<br>", unsafe_allow_html=True)
+st.sidebar.image("img_notebook/logo_dataspace.png", width=250)
+st.sidebar.markdown("<br>", unsafe_allow_html=True)
 page_sel = st.sidebar.radio(
-    "Select a page", options=("Home", "Jeu de données", "Segmentation sémantique", "A propos du model HRNetV2 + OCR"))
+    "Pages", options=("Home", "Jeu de données", "Segmentation sémantique", "A propos du model SOTA"))
 
 
 # Deleting the hamburger and the footer.
