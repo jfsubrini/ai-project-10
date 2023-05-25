@@ -1,29 +1,20 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=
 """
-Created by Jean-François Subrini on the 1st of April 2023.
-Creation of a semantic segmentation using a HRNetV2 + OCR model (created in the Notebook 2 Scripts).
+Created by Jean-François Subrini on the 26th of May 2023.
+Creation of a dashboard for "Projet 10 : Développez une preuve de concept".
+Simple Streamlit website with 4 "pages" to choose from the sidebar:
+Bienvenue / Jeu de données / Segmentation sémantique / A propos du model SOTA
 """
 import time
-import streamlit as st
-import numpy as np
 from matplotlib import pyplot as plt
+import streamlit as st
 
 
-# Creating the title for all pages.
+# Creating the title for all 4 "pages".
 st.title(":blue[PROJET 10 - Développez une POC]")
 
-# Creating the side bar with the logos and the pages to select.
-st.sidebar.title(":blue[TABLEAU DE BORD]")
-st.sidebar.markdown("<br>", unsafe_allow_html=True)
-st.sidebar.image("img_notebook/logo_dataspace.png", width=250)
-st.sidebar.markdown("<br>", unsafe_allow_html=True)
-page_sel = st.sidebar.radio(
-    "Pages", options=("Bienvenue", "Jeu de données", "Segmentation sémantique", "A propos du model SOTA"))
-st.sidebar.markdown("<br><br><br><br>", unsafe_allow_html=True)
-st.sidebar.image("img_notebook/streamlit_logo.png", width=150)
-
-# Deleting the hamburger and the footer.
+# Deleting the hamburger and the footer of the original Streamlit page.
 st.markdown("""
             <style>
             .css-nqowgj.edgvbvh3
@@ -37,6 +28,20 @@ st.markdown("""
             </style>
             """, unsafe_allow_html=True)
 
+# Creating the side bar with the logos and the pages to select.
+st.sidebar.title(":blue[TABLEAU DE BORD]")
+st.sidebar.markdown("<br>", unsafe_allow_html=True)
+st.sidebar.image("img_notebook/logo_dataspace.png", width=250)
+st.sidebar.markdown("<br>", unsafe_allow_html=True)
+page_sel = st.sidebar.radio(
+    "Pages", options=("Bienvenue",
+                      "Jeu de données",
+                      "Segmentation sémantique",
+                      "A propos du model SOTA"))
+st.sidebar.markdown("<br><br><br><br>", unsafe_allow_html=True)
+st.sidebar.image("img_notebook/streamlit_logo.png", width=150)
+
+# Page "Segmentation sémantique".
 if page_sel == "Segmentation sémantique":
     st.header(":orange[Segmentation sémantique d'une image]")
     st.markdown("<br>", unsafe_allow_html=True)
@@ -58,36 +63,85 @@ if page_sel == "Segmentation sémantique":
         time.sleep(3)
         bar.progress(0)
 
+# Page "Jeu de données".
 elif page_sel == "Jeu de données":
-    st.header(":orange[Jeu de données]")
+    # Cityscapes' global dataset.
+    st.header(":orange[Jeu de données global de Cityscapes]")
+    st.markdown("""
+                Nous nous basons ici sur le **jeu de données de Cityscapes** du projet 10.
+                """)
     st.image("img_notebook/logo_cityscapes.png", width=200)
     st.markdown("""
-                Nous utilisons le **jeu de données de Cityscapes** du projet 10.<br>
                 Il se concentre sur la compréhension sémantique des scènes de rue urbaines, 
                 avec ses 5 000 images et masques de haute qualité.
-                """, unsafe_allow_html=True)
-    opt = st.radio("Sélectionner un graphique", options=(
+                """)
+    st.markdown("----")
+    # Radio button to select the type of chart to display.
+    opt = st.radio("Sélectionner un diagramme", options=(
         "Diagramme à bâtons", "Diagramme à bâtons horizontal", "Diagramme Camembert"))
+    # Type of design for the charts.
     URL = "https://github.com/dhaitz/matplotlib-stylesheets/raw/master/pitayasmoothie-dark.mplstyle"
+    # Bar plot choice.
     if opt == "Diagramme à bâtons":
-        st.markdown("<h3 style='text-align: center;'>Diagramme à bâtons</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center;'>Diagramme à bâtons</h3>",
+                    unsafe_allow_html=True)
         fig = plt.figure()
         plt.style.use(URL)
-        plt.bar(np.array([1,2,3,4,5]), np.array([1,2,3,4,5]) * 10)
+        plt.bar(['training', 'validation', 'test'],
+                [2975, 500, 1525],
+                color=['blue', 'orange', 'green'])
         st.write(fig)
+    # Horizontal bar plot choice.
     elif opt == "Diagramme à bâtons horizontal":
-        st.markdown("<h3 style='text-align: center;'>Diagramme à bâtons horizontal</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center;'>Diagramme à bâtons horizontal</h3>",
+                    unsafe_allow_html=True)
         fig = plt.figure()
         plt.style.use(URL)
-        plt.barh(np.array([1,2,3,4,5]) * 10, np.array([1,2,3,4,5]))
+        plt.barh(['training', 'validation', 'test'],
+                 [2975, 500, 1525],
+                 color=['blue', 'orange', 'green'])
         st.write(fig)
+    # Pie chart choice.
     elif opt == "Diagramme Camembert":
-        st.markdown("<h3 style='text-align: center;'>Diagramme Camembert</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center;'>Diagramme Camembert</h3>",
+                    unsafe_allow_html=True)
         fig = plt.figure()
         plt.style.use(URL)
-        plt.barh(np.array([1,2,3,4,5]) * 10, np.array([1,2,3,4,5]))
+        plt.pie([2975, 500, 1525],
+                labels=['training', 'validation', 'test'],
+                colors=['blue', 'orange', 'green'],
+                explode = (0.1, 0, 0),
+                autopct='%1.1f%%')
         st.write(fig)
 
+    # Dataset finally used for training and performance evaluation of the model.
+    st.markdown("----")
+    st.header(":orange[Jeu de données pour training et évaluation]")
+    # Radio button to select the type of chart to display.
+    opt = st.radio("Sélectionner un diagramme", options=(
+        "Diagramme à bâtons", "Diagramme Camembert"))
+    # Bar plot choice.
+    if opt == "Diagramme à bâtons":
+        st.markdown("<h3 style='text-align: center;'>Diagramme à bâtons</h3>",
+                    unsafe_allow_html=True)
+        fig = plt.figure()
+        plt.style.use(URL)
+        plt.bar(['training', 'validation'], [744, 125], color=['blue', 'orange'])
+        st.write(fig)
+    # Pie chart choice.
+    elif opt == "Diagramme Camembert":
+        st.markdown("<h3 style='text-align: center;'>Diagramme Camembert</h3>",
+                    unsafe_allow_html=True)
+        fig = plt.figure()
+        plt.style.use(URL)
+        plt.pie([744, 125],
+                labels=['training', 'validation'],
+                colors=['blue', 'orange'],
+                explode = (0.1, 0),
+                autopct='%1.1f%%')
+        st.write(fig)
+
+# Page "A propos du model SOTA".
 elif page_sel == "A propos du model SOTA":
     st.header(":orange[Références bibliographiques et autres]")
     st.subheader(":orange[Articles de recherche]")
@@ -102,7 +156,7 @@ elif page_sel == "A propos du model SOTA":
     st.image("img_notebook/Jingdong_Wang.png", width=100)
     st.markdown("""
                 [Site web de Jingdong Wang](https://jingdongwang2017.github.io/Projects/HRNet/), 
-                Principal Research Manager de Microsoft Research Lab - Asia, à l’origine des modèles HRNet.
+                Principal Research Manager de Microsoft Research Lab - Asia, à l’origine des modèles HRNet et OCR.
                 """)
     st.subheader(":orange[Implémentation PyTorch des différents modèles HRNet]")
     st.markdown("""
@@ -114,15 +168,15 @@ elif page_sel == "A propos du model SOTA":
     st.image("img_notebook/tasm.png", width=250)
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("""
-                Nous avons utilisé 
+                Nous avons utilisé la bibliothèque Python TensorFlow 
                 [TASM, de Jan Marcel Kezmann](https://github.com/JanMarcelKezmann/TensorFlow-Advanced-Segmentation-Models), 
                 « ***A Python Library for High-Level Semantic Segmentation Models*** », 
                 pour la création du modèle HRNetV2 + OCR.
                 """)
     st.markdown("----")
-    st.markdown("***[Mon repository GitHub du projet 10](https://github.com/jfsubrini/ai-project-10)***")
+    st.markdown("***[Repository GitHub du projet 10](https://github.com/jfsubrini/ai-project-10)***")
 
-
+# Page "Bienvenue", landing page.
 else:
     st.header(":orange[Test d’un nouveau modèle de segmentation sémantique]")
     st.markdown("<br>", unsafe_allow_html=True)
