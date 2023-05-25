@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# pylint: disable=
+# pylint: disable=no-member
 """
 Created by Jean-François Subrini on the 26th of May 2023.
 Creation of a dashboard for "Projet 10 : Développez une preuve de concept".
@@ -7,8 +7,17 @@ Simple Streamlit website with 4 "pages" to choose from the sidebar:
 Bienvenue / Jeu de données / Segmentation sémantique / A propos du model SOTA
 """
 import time
+import cv2
 from matplotlib import pyplot as plt
 import streamlit as st
+from sem_seg_utils import (
+    NAME_LIST,
+    IMG_LIST,
+    MSK_LIST,
+    load_img_into_np_array,
+    mask_prediction,
+    unet_model
+    )
 
 
 # Creating the title for all 4 "pages".
@@ -41,27 +50,45 @@ page_sel = st.sidebar.radio(
 st.sidebar.markdown("<br><br><br><br>", unsafe_allow_html=True)
 st.sidebar.image("img_notebook/streamlit_logo.png", width=150)
 
+##############################################################################
+
 # Page "Segmentation sémantique".
 if page_sel == "Segmentation sémantique":
     st.header(":orange[Segmentation sémantique d'une image]")
     st.markdown("<br>", unsafe_allow_html=True)
     form = st.form("Form 1")
     img_selected = form.selectbox("Sélectionner une image : ",
-                                  options=("img1", "img2", "img3"))
+                                  options=(NAME_LIST))
     submit_state = form.form_submit_button("Valider")
     if submit_state:
-        st.success(f"Vous avez sélectionné l'image {img_selected} pour réaliser une \
+        st.success(f"Vous avez sélectionné l'image **{img_selected}** pour réaliser une \
             segmentation sémantique avec notre nouveau modèle.")
-        st.success("Attendez 4 secondes pour compléter le processus.")
-        # Progress bar completed in 4 seconds.
+        # Displaying the selected image.
+        img_name_id = NAME_LIST.index(img_selected)  # index in the list of the selected image name.
+        st.image(f"media/images/{IMG_LIST[img_name_id]}",
+                 caption=f"Image {img_selected}", width=400)
+        # Displaying the selected mask.
+        st.image(f"media/masks/{MSK_LIST[img_name_id]}",
+                 caption=f"Masque {img_selected}", width=400)
+        # Progress bar completed in 3 seconds.
+        st.success("Attendez 3 secondes pour que le processus soit complété.")
         bar = st.progress(0)
         progress_status = st.empty()
         for i in range(100):
             bar.progress(i + 1)
             progress_status.write(str(i + 1) + "%")
-            time.sleep(4 / 100)
-        time.sleep(3)
+            time.sleep(3 / 100)
+
+        # Preparing the image for prediction.
+        img_to_predict = cv2.imread(f"media/images/{IMG_LIST[img_name_id]}")
+        # img_to_predict = load_img_into_np_array(img_to_predict) / 255.0
+        # Predicting the mask.
+        pred_mask_colored = mask_prediction(unet_model, img_to_predict)
+        # Displaying the predicted mask.
+        st.image(pred_mask_colored, caption=f"Masque prédit {img_selected}", width=400)
         bar.progress(0)
+
+##############################################################################
 
 # Page "Jeu de données".
 elif page_sel == "Jeu de données":
@@ -141,6 +168,8 @@ elif page_sel == "Jeu de données":
                 autopct='%1.1f%%')
         st.write(fig)
 
+##############################################################################
+
 # Page "A propos du model SOTA".
 elif page_sel == "A propos du model SOTA":
     st.header(":orange[Références bibliographiques et autres]")
@@ -174,7 +203,10 @@ elif page_sel == "A propos du model SOTA":
                 pour la création du modèle HRNetV2 + OCR.
                 """)
     st.markdown("----")
-    st.markdown("***[Repository GitHub du projet 10](https://github.com/jfsubrini/ai-project-10)***")
+    st.markdown(
+        "***[Repository GitHub du projet 10](https://github.com/jfsubrini/ai-project-10)***")
+
+##############################################################################
 
 # Page "Bienvenue", landing page.
 else:
