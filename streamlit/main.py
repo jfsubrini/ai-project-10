@@ -46,7 +46,7 @@ page_sel = st.sidebar.radio(
     "Pages", options=("Bienvenue",
                       "Jeu de données",
                       "Segmentation sémantique",
-                      "A propos du model SOTA"))
+                      "A propos de notre modèle SOTA"))
 st.sidebar.markdown("<br><br><br><br>", unsafe_allow_html=True)
 st.sidebar.image("img_notebook/streamlit_logo.png", width=150)
 
@@ -95,7 +95,7 @@ elif page_sel == "Jeu de données":
     # Cityscapes' global dataset.
     st.header(":orange[Jeu de données global de Cityscapes]")
     st.markdown("""
-                Nous nous basons ici sur le **jeu de données de Cityscapes** du projet 10.
+                Nous nous basons ici sur le **jeu de données de Cityscapes** du Projet 8.
                 """)
     st.image("img_notebook/logo_cityscapes.png", width=200)
     st.markdown("""
@@ -105,7 +105,7 @@ elif page_sel == "Jeu de données":
     st.markdown("----")
     # Radio button to select the type of chart to display.
     opt = st.radio("Sélectionner un diagramme", options=(
-        "Diagramme à bâtons", "Diagramme à bâtons horizontal", "Diagramme Camembert"))
+        "Diagramme à bâtons", "Diagramme à bâtons horizontal", "Diagramme camembert"))
     # Type of design for the charts.
     URL = "https://github.com/dhaitz/matplotlib-stylesheets/raw/master/pitayasmoothie-dark.mplstyle"
     # Bar plot choice.
@@ -129,8 +129,8 @@ elif page_sel == "Jeu de données":
                  color=['blue', 'orange', 'green'])
         st.write(fig)
     # Pie chart choice.
-    elif opt == "Diagramme Camembert":
-        st.markdown("<h3 style='text-align: center;'>Diagramme Camembert</h3>",
+    elif opt == "Diagramme camembert":
+        st.markdown("<h3 style='text-align: center;'>Diagramme camembert</h3>",
                     unsafe_allow_html=True)
         fig = plt.figure()
         plt.style.use(URL)
@@ -146,7 +146,7 @@ elif page_sel == "Jeu de données":
     st.header(":orange[Jeu de données pour training et évaluation]")
     # Radio button to select the type of chart to display.
     opt = st.radio("Sélectionner un diagramme", options=(
-        "Diagramme à bâtons", "Diagramme Camembert"))
+        "Diagramme à bâtons", "Diagramme camembert"))
     # Bar plot choice.
     if opt == "Diagramme à bâtons":
         st.markdown("<h3 style='text-align: center;'>Diagramme à bâtons</h3>",
@@ -156,8 +156,8 @@ elif page_sel == "Jeu de données":
         plt.bar(['training', 'validation'], [744, 125], color=['blue', 'orange'])
         st.write(fig)
     # Pie chart choice.
-    elif opt == "Diagramme Camembert":
-        st.markdown("<h3 style='text-align: center;'>Diagramme Camembert</h3>",
+    elif opt == "Diagramme camembert":
+        st.markdown("<h3 style='text-align: center;'>Diagramme camembert</h3>",
                     unsafe_allow_html=True)
         fig = plt.figure()
         plt.style.use(URL)
@@ -170,8 +170,8 @@ elif page_sel == "Jeu de données":
 
 ##############################################################################
 
-# Page "A propos du model SOTA".
-elif page_sel == "A propos du model SOTA":
+# Page "A propos de notre modèle SOTA".
+elif page_sel == "A propos de notre modèle SOTA":
     st.header(":orange[Références bibliographiques et autres]")
     st.subheader(":orange[Articles de recherche]")
     st.markdown("""
@@ -185,7 +185,7 @@ elif page_sel == "A propos du model SOTA":
     st.image("img_notebook/Jingdong_Wang.png", width=100)
     st.markdown("""
                 [Site web de Jingdong Wang](https://jingdongwang2017.github.io/Projects/HRNet/), 
-                Principal Research Manager de Microsoft Research Lab - Asia, à l’origine des modèles HRNet et OCR.
+                Principal Research Manager de Microsoft Research Lab - Asia, à l’origine de ces modèles.
                 """)
     st.subheader(":orange[Implémentation PyTorch des différents modèles HRNet]")
     st.markdown("""
@@ -198,13 +198,13 @@ elif page_sel == "A propos du model SOTA":
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("""
                 Nous avons utilisé la bibliothèque Python TensorFlow 
-                [TASM, de Jan Marcel Kezmann](https://github.com/JanMarcelKezmann/TensorFlow-Advanced-Segmentation-Models), 
+                [TASM, de Jan-Marcel Kezmann](https://github.com/JanMarcelKezmann/TensorFlow-Advanced-Segmentation-Models), 
                 « ***A Python Library for High-Level Semantic Segmentation Models*** », 
                 pour la création du modèle HRNetV2 + OCR.
                 """)
     st.markdown("----")
     st.markdown(
-        "***[Repository GitHub du projet 10](https://github.com/jfsubrini/ai-project-10)***")
+        "***[Repository GitHub du Projet 10](https://github.com/jfsubrini/ai-project-10)***")
 
 ##############################################################################
 
