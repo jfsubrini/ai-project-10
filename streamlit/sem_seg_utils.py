@@ -6,13 +6,8 @@ Utils functions and variables for making semantic segmentation mask,
 using a HRNetV2 + OCR model (created in the Notebook 2 Scripts).
 """
 ### IMPORTS ###
-# Importation of Python modules and methods.
-from io import BytesIO
-# Importation of libraries.
 import cv2
 import numpy as np
-from PIL import Image
-# import tensorflow as tf
 from tensorflow.keras.models import load_model
 
 
@@ -86,7 +81,3 @@ def mask_prediction(model, img_to_predict):
     pred_mask_colored = get_colored(pred_mask, 8)
 
     return pred_mask_colored
-
-def load_img_into_np_array(img):
-    """Reading the bytes file and transform it into numpy array."""
-    return np.array(Image.open(BytesIO(img)))

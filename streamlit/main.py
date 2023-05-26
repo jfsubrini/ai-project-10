@@ -6,7 +6,6 @@ Creation of a dashboard for "Projet 10 : Développez une preuve de concept".
 Simple Streamlit website with 4 "pages" to choose from the sidebar:
 Bienvenue / Jeu de données / Segmentation sémantique / A propos du model SOTA
 """
-import time
 import cv2
 from matplotlib import pyplot as plt
 import streamlit as st
@@ -14,7 +13,6 @@ from sem_seg_utils import (
     NAME_LIST,
     IMG_LIST,
     MSK_LIST,
-    load_img_into_np_array,
     mask_prediction,
     unet_model
     )
@@ -70,23 +68,12 @@ if page_sel == "Segmentation sémantique":
         # Displaying the selected mask.
         st.image(f"media/masks/{MSK_LIST[img_name_id]}",
                  caption=f"Masque {img_selected}", width=400)
-        # Progress bar completed in 3 seconds.
-        st.success("Attendez 3 secondes pour que le processus soit complété.")
-        bar = st.progress(0)
-        progress_status = st.empty()
-        for i in range(100):
-            bar.progress(i + 1)
-            progress_status.write(str(i + 1) + "%")
-            time.sleep(3 / 100)
-
         # Preparing the image for prediction.
-        img_to_predict = cv2.imread(f"media/images/{IMG_LIST[img_name_id]}")
-        # img_to_predict = load_img_into_np_array(img_to_predict) / 255.0
+        img_to_predict = cv2.imread(f"media/images/{IMG_LIST[img_name_id]}") / 255.0
         # Predicting the mask.
         pred_mask_colored = mask_prediction(unet_model, img_to_predict)
         # Displaying the predicted mask.
         st.image(pred_mask_colored, caption=f"Masque prédit {img_selected}", width=400)
-        bar.progress(0)
 
 ##############################################################################
 
