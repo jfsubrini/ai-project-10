@@ -39,7 +39,7 @@ MSK_LIST = ["frankfurt_000000_000294_gtFine_color.png",
 
 ### LOADING MODEL & PREDICTION FUNCTIONS ###
 # Loading the selected UNET model.
-unet_model = load_model('model_unet', compile=False)  # TODO
+unet_model = load_model('model_unet', compile=False)  # TODO change the model
 # Image size.
 IMG_HEIGHT = 192
 IMG_WIDTH = 384
