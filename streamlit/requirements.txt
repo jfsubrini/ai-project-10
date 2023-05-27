@@ -1,5 +1,5 @@
-cv2
 matplotlib
 numpy
+opencv-python
 streamlit
 tensorflow
